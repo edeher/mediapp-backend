@@ -1,12 +1,16 @@
 package com.mitocode.controller;
 
-import java.net.URI;
-import java.util.List;
-
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+import java.net.URI;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -37,6 +41,13 @@ public class PacienteController {
 	public ResponseEntity<List<Paciente>> listar() {	
 		return new ResponseEntity<List<Paciente>>(service.listar(), HttpStatus.OK);		
 	}
+	
+	@GetMapping(value="/pageable", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Page<Paciente>> listarPageable(Pageable pageable){
+		Page<Paciente> pacientes;
+		pacientes = service.listarPageable(pageable);
+		return new ResponseEntity<Page<Paciente>>(pacientes, HttpStatus.OK);
+	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Resource<Paciente> listarPorId(@PathVariable("id") Integer id) {
@@ -54,7 +65,7 @@ public class PacienteController {
 	}
 
 	@PostMapping(produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> registrar(@RequestBody Paciente pac) {
+	public ResponseEntity<Object> registrar(@Valid @RequestBody Paciente pac) {
 		Paciente paciente = new Paciente();
 		paciente = service.registrar(pac);
 		// /pacientes/2
@@ -63,7 +74,7 @@ public class PacienteController {
 	}
 
 	@PutMapping(produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> modificar(@RequestBody Paciente pac) {
+	public ResponseEntity<Object> modificar(@Valid @RequestBody Paciente pac) {
 		service.modificar(pac);
 		return new ResponseEntity<Object>(HttpStatus.OK);
 	}

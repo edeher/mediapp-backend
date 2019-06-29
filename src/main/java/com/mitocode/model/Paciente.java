@@ -1,4 +1,4 @@
-package com.mitocode.model;
+ package com.mitocode.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

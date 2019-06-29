@@ -44,7 +44,7 @@ public class Consulta {
 		
 	// ISODate 2019-10-01T05:00:00.000
 	@JsonSerialize(using = ToStringSerializer.class) 
-	private LocalDateTime fecha;
+	private LocalDateTime fecha;	
 
 	public int getIdConsulta() {
 		return idConsulta;
@@ -93,5 +93,29 @@ public class Consulta {
 	public void setDetalleConsulta(List<DetalleConsulta> detalleConsulta) {
 		this.detalleConsulta = detalleConsulta;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idConsulta;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Consulta other = (Consulta) obj;
+		if (idConsulta != other.idConsulta)
+			return false;
+		return true;
+	}
+	
+	
 
 }
